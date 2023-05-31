@@ -1,0 +1,1 @@
+using the file results.csv find all rows that meet: more than 10 points and less than 40 laps
