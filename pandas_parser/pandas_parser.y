@@ -19,6 +19,19 @@ void appendToResult(const char *str) {
     }
 }
 
+void appendToString(const char *str, int index) {
+    if (numStrings < MAX_SIZE && index >= 0 && index <= numStrings) {
+        // Move the subsequent elements one space to the right
+        for (int i = numStrings; i > index; i--) {
+            strings[i] = strings[i - 1];
+        }
+        // Allocate memory for the new string and insert it at the specified index
+        strings[index] = malloc((strlen(str) + 1) * sizeof(char));
+        strcpy(strings[index], str);
+        numStrings++;
+    }
+}
+
 %}
 
 %start query
@@ -44,11 +57,13 @@ query: USING THE FILEE filename FIND ALL ROWS THAT MEET condition endoffile {
 filename: FILENAME                          { $$ = $1; }
 ;
 
-condition: MORE THAN NUMBER column          { appendToResult(")"); appendToResult($3); appendToResult("'] > "); appendToResult($4); appendToResult("(df['"); }
- | LESS THAN NUMBER column                  { appendToResult(")"); appendToResult($3); appendToResult("'] < "); appendToResult($4); appendToResult("(df['"); }
- | EQUAL TO NUMBER column                  { appendToResult(")"); appendToResult($3); appendToResult("'] == "); appendToResult($4); appendToResult("(df['"); }
+condition: MORE THAN NUMBER column          { appendToResult(")"); appendToResult($3); appendToResult("'] > "); appendToResult($4); appendToResult("(df['");  }
+ | LESS THAN NUMBER column                  { appendToResult(")"); appendToResult($3); appendToResult("'] < "); appendToResult($4); appendToResult("(df['");  }
+ | EQUAL TO NUMBER column                   { appendToResult(")"); appendToResult($3); appendToResult("'] == "); appendToResult($4); appendToResult("(df['"); }
  | MORE THAN OR EQUAL TO NUMBER column      { appendToResult(")"); appendToResult($6); appendToResult("'] >= "); appendToResult($7); appendToResult("(df['"); }
  | LESS THAN OR EQUAL TO NUMBER column      { appendToResult(")"); appendToResult($6); appendToResult("'] <= "); appendToResult($7); appendToResult("(df['"); }
+ | condition OR condition                   { appendToString(" || ", numStrings - 5); }
+ | condition AND condition                  { appendToString(" && ", numStrings - 5); }
  ;
 
 column: COLUMN                              { $$ = $1; }
