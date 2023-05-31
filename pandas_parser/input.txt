@@ -1,4 +1,4 @@
-using the file results.csv find all rows that meet: equal to 10 points.
+using the file results.csv find all rows that meet: more than or equal to 10 points.
 
  
  
