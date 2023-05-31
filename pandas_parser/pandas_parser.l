@@ -1,5 +1,6 @@
 %{
 #include "y.tab.h"
+#include <string.h>
 %}
 
 %%
@@ -15,16 +16,20 @@
 "more"                          { return MORE; }
 "than"                          { return THAN; }
 "and"                           { return AND; }
+"equal"                         { return EQUAL; }
+"to"                            { return TO; }
 "or"                            { return OR; }
 "less"                          { return LESS; }
-[0-9]+                          { yylval = atoi(yytext); return NUMBER; }
+"."                             { return ENDOFFILE; }
+
+[0-9]+                          { yylval.str = strdup(yytext); return NUMBER; }
 [a-zA-Z][a-zA-Z_0-9_-]*.csv     { yylval.str = strdup(yytext); return FILENAME; }
 
 resultId|raceId|driverId|constructorId|number|grid|position|positionText|positionOrder|points|laps|time|milliseconds|fastestLap|rank|fastestLapTime|fastestLapSpeed|statusId { yylval.str = strdup(yytext); return COLUMN; }
 
-\n return 0; 		            /* logical EOF */
 [ \t]+                          /* ignore whitespace */
-":"                             /* ignore semicolon */
+":"                             /* ignore colon */
+\n return 0;                    /* logical EOF */
 
 %%
 
