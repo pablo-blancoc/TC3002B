@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+FILE* yyin;
 int yylex();
 void yyerror(const char *s);
 
@@ -87,7 +88,15 @@ void printFinal() {
 }
 
 int main() {
+    const char* filename = "input.txt";
+    FILE* file = fopen(filename, "r");
+    if (!file) {
+        printf("Error: Unable to open the input file '%s'.\n", filename);
+        return 1;
+    }
+    yyin = file;
     yyparse();
+    fclose(file);
 
     printFinal();
     
