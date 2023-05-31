@@ -1,7 +1,7 @@
 all:
 	yacc -d pandas_parser.y
 	lex pandas_parser.l
-	gcc y.tab.c lex.yy.c -ly -ll -o pandas_parser
+	gcc -w y.tab.c lex.yy.c -ly -ll -o pandas_parser
 
 clean:
 	rm -rf *.c
