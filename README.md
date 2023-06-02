@@ -8,5 +8,6 @@
 > - Jaime Lopez-Hidalgo
 > - Sebastián Rojas
 > - Moisés Chávez
+> - Jesús Palomino
 
 
